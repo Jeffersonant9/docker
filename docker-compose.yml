@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  www:
+    build: .
+    ports: 
+      - "8080:80"
+    volumes:
+      - ./www:/var/www/html/
+    links:
+      - db
+    networks:
+      - default
+
+  db:
+    image: mysql
+    ports:
+    - "3306:3306"
+    environment:
+      MYSQL_DATABASE: pizzaria
+      MYSQL_USER: jeffe
+      MYSQL_PASSWORD: jeffe
+      MYSQL_ROOT_PASSWORD: jeffe
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
+      - ./pizzaria:/var/lib/mysql
+
+networks:
+  default:
